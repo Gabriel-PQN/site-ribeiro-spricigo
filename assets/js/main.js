@@ -22,6 +22,40 @@ nav.querySelectorAll('a').forEach((link) =>
   })
 );
 
+// Newsletter: renderiza os artigos definidos em conteudo.js
+const newsGrid = document.getElementById('newsGrid');
+if (newsGrid && typeof ARTIGOS !== 'undefined') {
+  newsGrid.innerHTML = ARTIGOS.map(
+    (a) => `
+    <article class="n-card reveal">
+      <div class="n-card__meta">
+        <span class="n-card__tag">${a.categoria}</span>
+        <time>${a.data}</time>
+      </div>
+      <h3>${a.titulo}</h3>
+      <p>${a.resumo}</p>
+      <span class="n-card__author">Por ${a.autora}</span>
+    </article>`
+  ).join('');
+}
+
+// Depoimentos: renderiza as avaliações definidas em conteudo.js
+const reviewsGrid = document.getElementById('reviewsGrid');
+if (reviewsGrid && typeof DEPOIMENTOS !== 'undefined') {
+  if (DEPOIMENTOS.length === 0) {
+    document.getElementById('reviewsEmpty').hidden = false;
+  } else {
+    reviewsGrid.innerHTML = DEPOIMENTOS.map(
+      (d) => `
+      <blockquote class="r-card reveal">
+        <span class="r-card__stars" aria-label="${d.estrelas} de 5 estrelas">${'★'.repeat(d.estrelas)}${'☆'.repeat(5 - d.estrelas)}</span>
+        <p>“${d.texto}”</p>
+        <footer>${d.nome} · avaliação no Google</footer>
+      </blockquote>`
+    ).join('');
+  }
+}
+
 // Revelação suave dos blocos ao entrar na tela
 const observer = new IntersectionObserver(
   (entries) => {
